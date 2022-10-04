@@ -12,7 +12,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class JwtProvider {
 private final SecretKey jwtSecretKey;
-public SecretKey getSecretKey(){
+private SecretKey getSecretKey(){
     return jwtSecretKey;
 }
 }

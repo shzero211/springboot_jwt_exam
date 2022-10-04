@@ -38,7 +38,7 @@ public class JwtTest {
     @Test
     @DisplayName("JwtProvider 객체로 시크릿키 객체를 생성할수 있다.")
     void t3(){
-        SecretKey secretKey= jwtProvider.getSecretKey();
+        SecretKey secretKey= TestUtil.callMethod(jwtProvider,"getSecretKey");
         assertThat(secretKey).isNotNull();
     }
 }
