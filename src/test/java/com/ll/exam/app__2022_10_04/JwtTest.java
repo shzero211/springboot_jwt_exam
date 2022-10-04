@@ -9,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.crypto.SecretKey;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -40,5 +45,24 @@ public class JwtTest {
     void t3(){
         SecretKey secretKey= TestUtil.callMethod(jwtProvider,"getSecretKey");
         assertThat(secretKey).isNotNull();
+    }
+    @Test
+    @DisplayName("JwtProvider 객체로 시크릿키 객체를 생성할수 있다.")
+    void t4(){
+        // 회원번호가 1이고
+        // username이 admin 이고
+        // ADMIN 역할과 MEMBER 역할을 동시에 가지고 있는 회원정보를 구성
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", 1L);
+        claims.put("username", "admin");
+        claims.put("authorities", Arrays.asList(
+                new SimpleGrantedAuthority("ADMIN"),
+                new SimpleGrantedAuthority("MEMBER"))
+        );
+
+        // 지금으로부터 5시간의 유효기간을 가지는 토큰을 생성
+       String accessToken=jwtProvider.generateAccessToken(claims,60*60*5);
+        System.out.println("accessToken : "+accessToken);
+        assertThat(accessToken).isNotNull();
     }
 }
