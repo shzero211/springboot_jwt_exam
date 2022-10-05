@@ -11,8 +11,5 @@ public class App20221004Application {
 	public static void main(String[] args) {
 		SpringApplication.run(App20221004Application.class, args);
 	}
-	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
-	}
+
 }

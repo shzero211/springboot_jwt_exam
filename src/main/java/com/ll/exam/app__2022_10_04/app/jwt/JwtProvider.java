@@ -31,4 +31,24 @@ private SecretKey getSecretKey(){
             .signWith(getSecretKey(), SignatureAlgorithm.HS256)
             .compact();
     }
+    public boolean verify(String token){
+    try{
+        Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
+                .parseClaimsJws(token);
+        return true;
+    }catch (Exception e){
+        return false;
+    }
+    }
+    public Map<String,Object> getClaims(String token){
+    String body=Jwts.parserBuilder()
+            .setSigningKey(getSecretKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get("body",String.class);
+    return Util.json.toMap(body);
+    }
 }

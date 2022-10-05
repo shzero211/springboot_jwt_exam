@@ -65,4 +65,21 @@ public class JwtTest {
         System.out.println("accessToken : "+accessToken);
         assertThat(accessToken).isNotNull();
     }
+    @Test
+    @DisplayName("accessToken을 통해서 claims 를 얻을수 있다")
+    void t5(){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", 1L);
+        claims.put("username", "admin");
+        claims.put("authorities", Arrays.asList(
+                new SimpleGrantedAuthority("ADMIN"),
+                new SimpleGrantedAuthority("MEMBER"))
+        );
+        String accessToken=jwtProvider.generateAccessToken(claims,60*60*5);
+        System.out.println("accessToken :" +accessToken);
+        assertThat(jwtProvider.verify(accessToken)).isTrue();
+        Map<String,Object> claimsFromToken=jwtProvider.getClaims(accessToken);
+        System.out.println("claimsFromToken :"+claimsFromToken);
+    }
+
 }
